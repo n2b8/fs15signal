@@ -25,7 +25,8 @@ var callback = function(response) {
         object: true
     };
     var json = parser.toJson(xml, option);
-    var int = JSON.stringify(json.Server.Slots.numUsed);
+    var string = JSON.stringify(json.Server.Slots.numUsed);
+    var int = parseInt(string, 10);
     console.log("Number of users online: ", int);
     if (int != zero) {
         Particle.toggleLED("1");
