@@ -3,8 +3,6 @@ var Particle = require("./particle.js");
 var express = require("express");
 var parser = require("xml2json");
 
-var ledStatus = 0;
-
 // Parameters for the HTTP request to get the XML data
 var fsServerParams = {
   host: process.env.SERV_HOST,
@@ -28,13 +26,11 @@ var callback = function(response) {
     var int = JSON.stringify(json.Server.Slots.numUsed);
     console.log("Number of users online: ", int);
     if (int == "0") {
-        ledStatus = 0;
-        console.log(ledStatus);
         Particle.toggleLED("0");
+        console.log("I'm being called because its 0");
     } else {
-        ledStatus = 1;
-        console.log(ledStatus);
         Particle.toggleLED("1");
+        console.log("I'm being called because its 1");
     }
   });
 };
