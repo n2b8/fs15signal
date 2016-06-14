@@ -5,7 +5,8 @@
   "main": "app.js",
   "repository": "",
   "engines": {
-    "node": "4.4.5"
+    "node": "4.4.5",
+    "npm": "2.15.5"
   },
   "author": "Jake McCaig <jake@downparty.io>",
   "dependencies": {
