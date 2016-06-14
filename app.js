@@ -25,7 +25,7 @@ var callback = function(response) {
         object: true
     };
     var json = parser.toJson(xml, option);
-    var string = JSON.stringify(json.Server.Slots.numUsed);
+    var string = JSON(json.Server.Slots.numUsed);
     console.log(string);
     var int = parseInt(string, 10);
     console.log("Number of users online: ", int);
