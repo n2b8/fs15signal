@@ -10,6 +10,8 @@ var fsServerParams = {
   port: process.env.SERV_PORT
 };
 
+var zero = "0";
+
 var callback = function(response) {
   var xml = '';
   // Server XML data received and stored
@@ -25,7 +27,7 @@ var callback = function(response) {
     var json = parser.toJson(xml, option);
     var int = JSON.stringify(json.Server.Slots.numUsed);
     console.log("Number of users online: ", int);
-    if (int != "0") {
+    if (int != zero) {
         Particle.toggleLED("1");
         console.log("I'm being called because its 1");
     } else {
