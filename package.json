@@ -6,7 +6,7 @@
   "repository": "",
   "engines": {
     "node": "4.4.5"
-  }
+  },
   "author": "Jake McCaig <jake@downparty.io>",
   "dependencies": {
     "async": "~0.2.8",
