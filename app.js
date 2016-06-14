@@ -4,7 +4,6 @@ var express = require("express");
 var parser = require("xml2json");
 
 var ledStatus = 0;
-//Particle.login();
 
 // Parameters for the HTTP request to get the XML data
 var fsServerParams = {
@@ -14,7 +13,6 @@ var fsServerParams = {
 };
 
 var callback = function(response) {
-  // Log into the Particle.io Cloud
   var xml = '';
   // Server XML data received and stored
   response.on('data', function (chunk) {
@@ -31,13 +29,13 @@ var callback = function(response) {
     console.log("Number of users online: ", int);
     if (int == "0") {
         ledStatus = 0;
+        console.log(ledStatus);
         Particle.toggleLED("0");
     } else {
         ledStatus = 1;
+        console.log(ledStatus);
         Particle.toggleLED("1");
     }
-    console.log(ledStatus);
-    //Particle.toggleLED(int);
   });
 };
 
