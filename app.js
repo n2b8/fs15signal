@@ -10,8 +10,6 @@ var fsServerParams = {
   port: process.env.SERV_PORT
 };
 
-var zero = "0";
-
 var callback = function(response) {
   var xml = '';
   // Server XML data received and stored
@@ -25,16 +23,14 @@ var callback = function(response) {
         object: true
     };
     var json = parser.toJson(xml, option);
-    var string = JSON.parse(json.Server.Slots.numUsed);
-    console.log(string);
-    var int = parseInt(string, 10);
+    var int = JSON.parse(json.Server.Slots.numUsed);
     console.log("Number of users online: ", int);
-    if (int != zero) {
-        Particle.toggleLED("1");
-        console.log("I'm being called because its 1");
-    } else {
+    if (int == 0) {
         Particle.toggleLED("0");
         console.log("I'm being called because its 0");
+    } else {
+        Particle.toggleLED("1");
+        console.log("I'm being called because its 1");
     }
   });
 };
