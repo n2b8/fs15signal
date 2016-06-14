@@ -25,12 +25,12 @@ var callback = function(response) {
     var json = parser.toJson(xml, option);
     var int = JSON.stringify(json.Server.Slots.numUsed);
     console.log("Number of users online: ", int);
-    if (int == 0) {
-        Particle.toggleLED("0");
-        console.log("I'm being called because its 0");
-    } else {
+    if (int != "0") {
         Particle.toggleLED("1");
         console.log("I'm being called because its 1");
+    } else {
+        Particle.toggleLED("0");
+        console.log("I'm being called because its 0");
     }
   });
 };
