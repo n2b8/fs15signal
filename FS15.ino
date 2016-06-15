@@ -1,3 +1,6 @@
+// This #include statement was automatically added by the Particle IDE.
+#include "SparkFunMicroOLED/SparkFunMicroOLED.h"
+
 // -----------------------------------
 // FS15 Signaler
 // -----------------------------------
@@ -5,18 +8,26 @@
 // LED Pin
 int led1 = D0;
 
+// OLED initialization
+MicroOLED oled;
+
 void setup()
 {
 
    // Configure the pin as an output
    pinMode(led1, OUTPUT);
 
-   // Declare a Particle function to open up the LED to the cloud.
-   // This is saying that when we ask the cloud for the function "led", it will employ the function ledToggle() from this app.
+   // Declare Paticle functions to open up to the cloud
    Particle.function("led",ledToggle);
+   Particle.function("print",printCash);
 
    // Just making sure the LED is off when the app starts up.
    digitalWrite(led1, LOW);
+   
+   // OLED setup
+    oled.begin();        // Initialize the OLED
+    oled.clear(ALL);     // Clear the display's internal memory
+    oled.clear(PAGE);    // Clear the buffer.
 
 }
 
@@ -41,3 +52,22 @@ int ledToggle(String command) {
         return -1;
     }
 }
+
+int printCash(String cash) {
+    if (cash != "") {
+        oled.clear(PAGE);            // Clear the display
+        
+        // Center OLED cursor
+        int middleX = oled.getLCDWidth() / 2;  // Get X axis center
+        int middleY = oled.getLCDHeight() / 2; // Get Y axis center
+        oled.setCursor(middleX - (oled.getFontWidth() * (3)), middleY - (oled.getFontWidth() / 2)); // Set cursor as close to the center as possible.
+        
+        oled.setFontType(0);  // Smallest font
+        oled.print("$");      // Print dollar sign
+        oled.print(cash);     // Print cash amount
+        
+        oled.display();
+        return 1;
+    } else return -1;
+}
+
