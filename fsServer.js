@@ -24,12 +24,14 @@ var callback = function(response) {
     };
     var json = parser.toJson(xml, option);
     var int = JSON.parse(json.Server.Slots.numUsed);
-    console.log("Number of users online: ", int);
+    console.log("Number of users online:", int);
     if (int == 0) {
         Particle.toggleLED("0");
     } else {
         Particle.toggleLED("1");
     }
+    var cash = JSON.parse(json.Server.money);
+    console.log("Cash on hand: $" + cash);
   });
 };
 
