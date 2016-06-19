@@ -10,8 +10,6 @@
 
 Simple NodeJS application that monitors my Farming Simulator 15 dedicated server to see if users are online and tells a Particle Photon powered device on my desk to give a visual signal that 'farm equipment is in use'.
 
-## Current Version: 0.1.3
-
 ## Running the app
 
 1) I recommend using Heroku
@@ -33,5 +31,17 @@ Once the app is running, it will poll the FS15 server every 15 seconds to see if
 ## Future plans...
 
 Not sure what all I'll end up doing since this is just a bored afternoon's worth of work but I definitely plan on 3D printing an enclosure. I'd also like to add an OLED screen with a running count of the in game cash. We'll see.
+
+# Change Log
+
+## [0.2.0] - Jun 18th, 2016
+### Added
+- Started using Gulp like I should have done from the get go.
+- Re-organized package.json
+- Added this change log.
+
+## [0.1.3] - Jun 17th, 2016
+### Changed
+- xml2js to xml2json - It seems to handle the data better.
 
 www.JakeMcCaig.com
