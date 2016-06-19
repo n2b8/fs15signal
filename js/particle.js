@@ -14,15 +14,15 @@ exports.toggleLED = function(int) {
     });
 };
 
-exports.publishStats = function(userQuantity, cash) {
-    var publishEventPr = particle.publishEvent({ name: 'stats', data: { 'users' : userQuantity, 'money' : cash }, auth: token });
+exports.publishUsers = function(users) {
+    var publishEventPr = particle.publishEvent({ name: 'users', data: {users}, auth: token });
 
     publishEventPr.then(
         function(data) {
-            if (data.body.ok) { console.log("Stats published succesfully"); }
+            if (data.body.ok) { console.log("User quantity published succesfully"); }
         },
         function(err) {
-            console.log("Failed to publish stats: " + err);
+            console.log("Failed to publish user quantity: " + err);
         }
     );
 };
