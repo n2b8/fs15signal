@@ -13,3 +13,16 @@ exports.toggleLED = function(int) {
         console.log('An error occurred:', err);
     });
 };
+
+exports.publishStats = function(userQuantity, cash) {
+    var publishEventPr = particle.publishEvent({ name: 'stats', data: { 'users' : userQuantity, 'money' : cash }, auth: token });
+
+    publishEventPr.then(
+        function(data) {
+            if (data.body.ok) { console.log("Stats published succesfully"); }
+        },
+        function(err) {
+            console.log("Failed to publish stats: " + err);
+        }
+    );
+};
