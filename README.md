@@ -10,6 +10,8 @@
 
 Simple NodeJS application that monitors my Farming Simulator 15 dedicated server to see if users are online and tells a Particle Photon powered device on my desk to give a visual signal that 'farm equipment is in use'.
 
+## Current Version: 0.1.3
+
 ## Running the app
 
 1) I recommend using Heroku
