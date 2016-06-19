@@ -8,7 +8,7 @@ exports.toggleLED = function(int) {
     
     fnPr.then(
         function(data) {
-            console.log('Function called succesfully:', data);
+            console.log('Particle function called succesfully');
         }, function(err) {
         console.log('An error occurred:', err);
     });

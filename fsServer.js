@@ -14,7 +14,7 @@ var callback = function(response) {
   var xml = '';
   // Server XML data received and stored
   response.on('data', function (chunk) {
-    xml = chunk;
+    xml += chunk;
   });
 
   // Reponse is complete, so we just parse out what we need and print it out here
@@ -38,3 +38,4 @@ var callback = function(response) {
 exports.pollServer = function () {
   http.request(fsServerParams, callback).end();
 };
+
