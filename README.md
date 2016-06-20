@@ -37,6 +37,7 @@ Once the app is running, it will poll the FS15 server every 15 seconds to see if
 # Future plans...
 - 3D printed enclosure
 - NeoPixel support
+- Cover with tests
 
 # Change Log
 
