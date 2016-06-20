@@ -34,6 +34,12 @@ Not sure what all I'll end up doing since this is just a bored afternoon's worth
 
 # Change Log
 
+## [0.3.0] - Jun 19th, 2016
+### Completed
+- OLED support.
+### Added
+- gulp-bump support.
+
 ## [0.2.0] - Jun 18th, 2016
 ### Added
 - Started using Gulp like I should have done from the get go.

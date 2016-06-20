@@ -32,7 +32,8 @@ var callback = function(response) {
     }
     var cash = JSON.parse(json.Server.money);
     console.log("Cash on hand: $" + cash);
-    Particle.publishUsers(int);
+    Particle.setUsers(int.toString());
+    Particle.setCash(cash.toString());
   });
 };
 
