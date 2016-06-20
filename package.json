@@ -1,6 +1,6 @@
 {
   "name": "fs15signal",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Server that checks to see if anyone is on my Farming Simulator 15 server and lights up a sign on my desk to alert me.",
   "main": "app.js",
   "repository": "github.com/n2b8/fs15signal",
@@ -10,6 +10,7 @@
   },
   "author": "Jake McCaig <jake@downparty.io>",
   "dependencies": {
+    "add-commas": "0.0.4",
     "express": "3.2.4",
     "particle-api-js": "5.3.0",
     "xml2json": "0.9.1"

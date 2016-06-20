@@ -1,6 +1,7 @@
 var parser = require("xml2json");
 var http = require("http");
 var Particle = require("./particle.js");
+var addCommas = require("add-commas");
 
 // Parameters for the HTTP request to get the XML data
 var fsServerParams = {
@@ -31,9 +32,9 @@ var callback = function(response) {
         Particle.toggleLED("1");
     }
     var cash = JSON.parse(json.Server.money);
-    console.log("Cash on hand: $" + cash);
+    console.log("Cash on hand: $" + addCommas(cash));
     Particle.setUsers(int.toString());
-    Particle.setCash(cash.toString());
+    Particle.setCash(addCommas(cash.toString()));
   });
 };
 

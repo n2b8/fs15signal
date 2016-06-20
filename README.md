@@ -41,6 +41,10 @@ Once the app is running, it will poll the FS15 server every 15 seconds to see if
 
 # Change Log
 
+## [0.3.1] - Jun 19th, 2016
+### Added
+- add-commas dependency to automatically add commas in dollar amount. (e.g. 12000 becomes 12,000)
+
 ## [0.3.0] - Jun 19th, 2016
 ### Completed
 - OLED support.

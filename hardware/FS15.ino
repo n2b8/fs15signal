@@ -12,8 +12,8 @@
 int led1 = D0;
 
 // variables
-char users[1];
-char cash[8];
+char users[10];
+char cash[10];
 
 // OLED initialization
 MicroOLED oled;
@@ -155,4 +155,3 @@ uint32_t Wheel(byte WheelPos) {
    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
 }
-
