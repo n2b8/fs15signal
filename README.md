@@ -37,6 +37,7 @@ Not sure what all I'll end up doing since this is just a bored afternoon's worth
 ## [0.3.0] - Jun 19th, 2016
 ### Completed
 - OLED support.
+
 ### Added
 - gulp-bump support.
 
