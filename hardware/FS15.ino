@@ -8,40 +8,155 @@
 // FS15 Signaler
 // -----------------------------------
 
-// LED Pin
-int led1 = D0;
-
 // variables
 char users[10];
 char cash[10];
+int neoCommand = 0;
 
 // OLED initialization
-MicroOLED oled;
+#define PIN_RESET D5  // Connect RST to pin 7 (req. for SPI and I2C)
+#define PIN_DC    D4  // Connect DC to pin 6 (required for SPI)
+#define PIN_CS    A2 // Connect CS to pin A2 (required for SPI)
+MicroOLED oled(MODE_SPI, PIN_RESET, PIN_DC, PIN_CS);
 
 // NeoPixel Ring
 #define PIXEL_COUNT 24
-#define PIXEL_PIN D2
+#define PIXEL_PIN D6
 #define PIXEL_TYPE WS2812B
-
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, PIXEL_TYPE);
-void colorWipe(uint32_t c, uint8_t wait);
-void rainbow(uint8_t wait);
+uint32_t fire_color   = strip.Color ( 80,  35,  00);
+uint32_t off_color    = strip.Color (  0,  0,  0);
+
+//
+// NeoFire
+// Thanks to http://www.arduinoslovakia.eu/blog/2015/9/simulacia-ohna
+//
+class NeoFire
+{
+  Adafruit_NeoPixel &strip;
+ public:
+
+  NeoFire(Adafruit_NeoPixel&);
+  void Draw();
+  void Clear();
+  void AddColor(uint8_t position, uint32_t color);
+  void SubstractColor(uint8_t position, uint32_t color);
+  uint32_t Blend(uint32_t color1, uint32_t color2);
+  uint32_t Substract(uint32_t color1, uint32_t color2);
+};
+
+///
+/// Constructor
+///
+NeoFire::NeoFire(Adafruit_NeoPixel& n_strip)
+: strip (n_strip)
+{
+}
+
+///
+/// Set all colors
+///
+void NeoFire::Draw()
+{
+Clear();
+
+for(int i=0;i<PIXEL_COUNT;i++)
+  {
+  AddColor(i, fire_color);
+  int r = random(80);
+  uint32_t diff_color = strip.Color ( r, r/2, r/2);
+  SubstractColor(i, diff_color);
+  }
+  
+strip.show();
+}
+
+///
+/// Set color of LED
+///
+void NeoFire::AddColor(uint8_t position, uint32_t color)
+{
+uint32_t blended_color = Blend(strip.getPixelColor(position), color);
+strip.setPixelColor(position, blended_color);
+}
+
+///
+/// Set color of LED
+///
+void NeoFire::SubstractColor(uint8_t position, uint32_t color)
+{
+uint32_t blended_color = Substract(strip.getPixelColor(position), color);
+strip.setPixelColor(position, blended_color);
+}
+
+///
+/// Color blending
+///
+uint32_t NeoFire::Blend(uint32_t color1, uint32_t color2)
+{
+uint8_t r1,g1,b1;
+uint8_t r2,g2,b2;
+uint8_t r3,g3,b3;
+
+r1 = (uint8_t)(color1 >> 16),
+g1 = (uint8_t)(color1 >>  8),
+b1 = (uint8_t)(color1 >>  0);
+
+r2 = (uint8_t)(color2 >> 16),
+g2 = (uint8_t)(color2 >>  8),
+b2 = (uint8_t)(color2 >>  0);
+
+return strip.Color(constrain(r1+r2, 0, 255), constrain(g1+g2, 0, 255), constrain(b1+b2, 0, 255));
+}
+
+///
+/// Color blending
+///
+uint32_t NeoFire::Substract(uint32_t color1, uint32_t color2)
+{
+uint8_t r1,g1,b1;
+uint8_t r2,g2,b2;
+uint8_t r3,g3,b3;
+int16_t r,g,b;
+
+r1 = (uint8_t)(color1 >> 16),
+g1 = (uint8_t)(color1 >>  8),
+b1 = (uint8_t)(color1 >>  0);
+
+r2 = (uint8_t)(color2 >> 16),
+g2 = (uint8_t)(color2 >>  8),
+b2 = (uint8_t)(color2 >>  0);
+
+r=(int16_t)r1-(int16_t)r2;
+g=(int16_t)g1-(int16_t)g2;
+b=(int16_t)b1-(int16_t)b2;
+if(r<0) r=0;
+if(g<0) g=0;
+if(b<0) b=0;
+
+return strip.Color(r, g, b);
+}
+
+///
+/// Every LED to black
+///
+void NeoFire::Clear()
+{
+for(uint16_t i=0; i<PIXEL_COUNT; i++)
+  strip.setPixelColor(i, off_color);
+}
+
+NeoFire fire(strip);
 
 void setup()
 {
 
-   // Configure the pin as an output
-   pinMode(led1, OUTPUT);
-
-   // Declare Paticle functions to open up to the cloud
-   Particle.function("led",ledToggle);
-   Particle.function("users",setUsers);
-   Particle.function("cash",setCash);
-
-   // Just making sure the LED is off when the app starts up.
-   digitalWrite(led1, LOW);
+    // Declare Paticle functions to open up to the cloud
+    Particle.function("led",ledToggle);
+    Particle.function("users",setUsers);
+    Particle.function("cash",setCash);
    
-   // OLED setup
+    // OLED setup
     oled.begin();        // Initialize the OLED
     oled.clear(ALL);     // Clear the display's internal memory
     oled.clear(PAGE);    // Clear the buffer.
@@ -56,23 +171,25 @@ void loop()
 {
     // Calling the printData function to continuously update the OLED
     printData();
-    // Just calling a couple of temporary neopixel functions
-    colorWipe(strip.Color(255, 0, 0), 50); // Red
-    colorWipe(strip.Color(0, 255, 0), 50); // Green
-    colorWipe(strip.Color(0, 0, 255), 50); // Blue
-   
-    rainbow(20);
+    // Running logic to turn a neopixel ring on and off
+    if (neoCommand==1) {
+        lightThisCandle();
+    }
+    else {
+        fire.Clear();
+        strip.show();
+    }
 }
 
 // Function that will be called if a request is received from the cloud.
 int ledToggle(String command) {
 
     if (command=="1") {
-        digitalWrite(led1,HIGH);
+        neoCommand = 1;
         return 1;
     }
     else if (command=="0") {
-        digitalWrite(led1,LOW);
+        neoCommand = 0;
         return 0;
     }
     else {
@@ -120,38 +237,7 @@ void printData() {
     oled.display();
 }
 
-// Various neopixel functions
-// These are only temporary
-void colorWipe(uint32_t c, uint8_t wait) {
-  for(uint16_t i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, c);
-    strip.show();
-    delay(wait);
-  }
-}
-
-void rainbow(uint8_t wait) {
-  uint16_t i, j;
-
-  for(j=0; j<256; j++) {
-    for(i=0; i<strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel((i+j) & 255));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-// Input a value 0 to 255 to get a color value.
-// The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos) {
-  if(WheelPos < 85) {
-   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-  } else if(WheelPos < 170) {
-   WheelPos -= 85;
-   return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  } else {
-   WheelPos -= 170;
-   return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
+void lightThisCandle() {
+    fire.Draw();
+    delay(random(50,150));
 }
