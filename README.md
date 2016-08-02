@@ -36,8 +36,8 @@ Once the app is running, it will poll the FS15 server every 15 seconds to see if
 
 # Future plans...
 - 3D printed enclosure
-- NeoPixel support
 - Cover with tests
+- Didn't take into account making tons of in game money so possibly adding Numeral.js to properly format cash string beyond $10 mil.
 
 # Change Log
 
