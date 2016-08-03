@@ -41,6 +41,10 @@ Once the app is running, it will poll the FS15 server every 15 seconds to see if
 
 # Change Log
 
+## [0.4.1] - Aug 2nd, 2016
+### Added
+- Added numeral.js to format cash when more than 7 figures banked.
+
 ## [0.4.0] - Aug 1st, 2016
 ### Added
 - Added a simulated fire library to the ino file for the NeoPixel ring. Thanks to Róbert Ulbricht for the code.
