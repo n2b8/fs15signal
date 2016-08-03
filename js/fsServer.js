@@ -62,8 +62,6 @@ var callback = function(response) {
     var cash = JSON.parse(json.Server.money);
     console.log("Cash on hand: $" + addCommas(cash));
     Particle.setUsers(int.toString());
-    // Particle.setCash(addCommas(cash.toString()));
-    // console.log(cash.toString().length);
     if (cash.toString().length > 7) {
       Particle.setCash(numeral(cash).format('0.00 a'));
       console.log(numeral(cash).format('0.00 a'));
