@@ -11,6 +11,33 @@ var fsServerParams = {
   port: process.env.SERV_PORT
 };
 
+// Load in the english abbreviations for Numeral.js
+numeral.language('en', {
+    delimiters: {
+        thousands: ' ',
+        decimal: '.'
+    },
+    abbreviations: {
+        thousand: 'k',
+        million: 'mil',
+        billion: 'bn',
+        trillion: 't'
+    },
+    ordinal: function (number) {
+            var b = number % 10;
+            return (~~ (number % 100 / 10) === 1) ? 'th' :
+                (b === 1) ? 'st' :
+                (b === 2) ? 'nd' :
+                (b === 3) ? 'rd' : 'th';
+        },
+        currency: {
+            symbol: '$'
+        }
+});
+
+// switch between languages
+numeral.language('en');
+
 // Handle the data returned from the FS15 server
 var callback = function(response) {
   var xml = '';
@@ -36,8 +63,10 @@ var callback = function(response) {
     console.log("Cash on hand: $" + addCommas(cash));
     Particle.setUsers(int.toString());
     // Particle.setCash(addCommas(cash.toString()));
-    if (cash.length > 7) {
+    // console.log(cash.toString().length);
+    if (cash.toString().length > 7) {
       Particle.setCash(numeral(cash).format('0.00 a'));
+      console.log(numeral(cash).format('0.00 a'));
     } else {
       Particle.setCash(addCommas(cash.toString()));
     }

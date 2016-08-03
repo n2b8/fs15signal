@@ -2,7 +2,7 @@ var Particle = require("particle-api-js");
 var particle = new Particle();
 
 var token = process.env.PARTICLE_ACCESS_TOKEN;
-var device = process.env.PARTICLE_DEVICE_ID
+var device = process.env.PARTICLE_DEVICE_ID;
 
 exports.toggleLED = function(int) {
     var fnPr = particle.callFunction({ deviceId: device, name: 'led', argument: int, auth: token });
